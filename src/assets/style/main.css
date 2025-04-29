@@ -15,3 +15,5 @@
 /* Cmps */
 @import './cmp/app-header.css';
 @import './cmp/toy-list.css';
+@import './cmp/popup.css';
+@import './cmp/chat.css';

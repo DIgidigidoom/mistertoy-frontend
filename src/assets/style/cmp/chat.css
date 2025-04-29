@@ -1,0 +1,38 @@
+.chat {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.msg {
+    padding: 5px 10px;
+    margin: 5px 0;
+}
+
+.user-msg {
+    text-align: right;
+    background-color: #e0f7fa;
+    border-radius: 10px;
+}
+
+.support-msg {
+    text-align: left;
+    background-color: #f1f8e9;
+    border-radius: 10px;
+}
+
+.chat-form {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-form input {
+    flex-grow: 1;
+    padding: 0.5em;
+}
