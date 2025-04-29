@@ -47,7 +47,7 @@ export function ToyIndex() {
 
 
     return (
-        <div>
+        <div className='main-index container'>
             <h3>Mister Toy App</h3>
             <main>
                 {/* <Link to="/toy/edit">Add Toy</Link>

@@ -1,5 +1,6 @@
 
 import { storageService } from './async-storage.service.js'
+import { seedToys } from './toy.seed.service.js'
 // import { utilService } from './util.service.js'
 // import { userService } from './user.service.js'
 
@@ -14,6 +15,9 @@ export const toyService = {
     getRandomToy,
     getDefaultFilter
 }
+
+
+seedToys()
 
 function query(filterBy = {}) {
     return storageService.query(STORAGE_KEY)

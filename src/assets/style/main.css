@@ -4,7 +4,8 @@
 /* @import './setup/fonts.css'; */
 
 /* Basics */
-
+@import './base/layout.css';
+@import './base/base.css';
 
 /* @import './basics/layout.css'; */
 
@@ -13,3 +14,4 @@
 
 /* Cmps */
 @import './cmp/app-header.css';
+@import './cmp/toy-list.css';
