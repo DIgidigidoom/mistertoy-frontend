@@ -9,8 +9,8 @@ export function ToyPreview({ toy }) {
             <p>Availability: <span>{toy.inStock ? 'In Stock' : 'Out of stock'} </span></p>
             <p>Labels: [{toy.labels.join(', ')}]</p>
 
-            <Link to={`/toy/edit/${toy._id}`}>Edit</Link> &nbsp; | &nbsp;
-            <Link to={`/toy/${toy._id}`}>Details</Link>
+           
+            
 
         </article>
     )

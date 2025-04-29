@@ -13,7 +13,9 @@ export function ToyList({ toys, onRemoveToy, onEditToy, addToCart }) {
 
                     <div>
                         <button onClick={() => onRemoveToy(toy._id)}>x</button>
-                         <button onClick={() => navigate(`/toy/edit/${toy._id}`)}>Edit</button>
+                        <button onClick={() => navigate(`/toy/edit/${toy._id}`)}>Edit</button>
+                        <button onClick={() => navigate(`/toy/${toy._id}`)}>Details</button>
+
                     </div>
                     {/* <button className="buy" onClick={() => addToCart(toy)}>
                         Add to Cart
