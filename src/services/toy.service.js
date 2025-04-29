@@ -12,7 +12,6 @@ export const toyService = {
     save,
     remove,
     getEmptyToy,
-    getRandomToy,
     getDefaultFilter
 }
 
@@ -54,17 +53,13 @@ function save(toy) {
 
 function getEmptyToy() {
     return {
-        vendor: '',
+        name: '',
         price: '',
+        labels:'',
     }
 }
 
-function getRandomToy() {
-    return {
-        vendor: 'Susita-' + (Date.now() % 1000),
-        price: utilService.getRandomIntInclusive(1000, 9000),
-    }
-}
+
 
 function getDefaultFilter() {
     return { txt: '', maxPrice: '' }

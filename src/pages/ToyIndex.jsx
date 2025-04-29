@@ -24,26 +24,29 @@ export function ToyIndex() {
     //     setFilterBy(filterBy)
     // }
 
-     function onRemoveToy(toyId) {
-            removeToyOptimistic(toyId)
-                .then(() => {
-                    showSuccessMsg('Toy removed')
-                })
-                .catch(err => {
-                    showErrorMsg('Cannot remove toy')
-                })
-        }
+    function onRemoveToy(toyId) {
+        removeToyOptimistic(toyId)
+            .then(() => {
+                showSuccessMsg('Toy removed')
+            })
+            .catch(err => {
+                showErrorMsg('Cannot remove toy')
+            })
+    }
 
-        // function onAddToy() {
-        //         const toyToSave = toyService.getRandomToy()
-        //         saveCar(carToSave)
-        //             .then((savedCar) => {
-        //                 showSuccessMsg(`Car added (id: ${savedCar._id})`)
-        //             })
-        //             .catch(err => {
-        //                 showErrorMsg('Cannot add car')
-        //             })
-        //     }
+    // function onEditToy(toy) {
+    //         const price = +prompt('New price?')
+    //         const toyToSave = { ...toy, price }
+    
+    //         saveToy(toyToSave)
+    //             .then((savedToy) => {
+    //                 showSuccessMsg(`Toy updated to price: $${savedToy.price}`)
+    //             })
+    //             .catch(err => {
+    //                 showErrorMsg('Cannot update toy')
+    //             })
+    //     }
+    
 
 
     return (
@@ -57,8 +60,7 @@ export function ToyIndex() {
                     ? <ToyList
                         toys={toys}
                         onRemoveToy={onRemoveToy}
-                        // onEditToy={onEditToy}
-                        // addToToyt={addToToyt}
+                        // onEditToy = {onEditToy}
                     />
                     : <div>Loading...</div>
                 }

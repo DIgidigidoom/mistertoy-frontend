@@ -1,6 +1,10 @@
 import { ToyPreview } from "./ToyPreview.jsx"
+import { useNavigate } from "react-router-dom"
 
 export function ToyList({ toys, onRemoveToy, onEditToy, addToCart }) {
+
+    const navigate = useNavigate()
+
     return (
         <ul className="toy-list">
             {toys.map(toy =>
@@ -9,7 +13,7 @@ export function ToyList({ toys, onRemoveToy, onEditToy, addToCart }) {
 
                     <div>
                         <button onClick={() => onRemoveToy(toy._id)}>x</button>
-                        <button onClick={() => onEditToy(toy)}>Edit</button>
+                         <button onClick={() => navigate(`/toy/edit/${toy._id}`)}>Edit</button>
                     </div>
                     {/* <button className="buy" onClick={() => addToCart(toy)}>
                         Add to Cart
