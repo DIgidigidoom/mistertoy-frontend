@@ -18,16 +18,50 @@ export const toyService = {
 
 seedToys()
 
+// function query(filterBy = {}) {
+//     return storageService.query(STORAGE_KEY)
+//         .then(toys => {
+//             if (!filterBy.txt) filterBy.txt = ''
+//             if (!filterBy.maxPrice) filterBy.maxPrice = Infinity
+//             const regExp = new RegExp(filterBy.txt, 'i')
+//             return toys.filter(toy =>
+//                 regExp.test(toy.name) &&
+//                 toy.price <= filterBy.maxPrice
+//             )
+//         })
+// }
 function query(filterBy = {}) {
+    let { txt, maxPrice, inStockFilter, sortBy, sortOrder } = filterBy
     return storageService.query(STORAGE_KEY)
         .then(toys => {
-            if (!filterBy.txt) filterBy.txt = ''
-            if (!filterBy.maxPrice) filterBy.maxPrice = Infinity
-            const regExp = new RegExp(filterBy.txt, 'i')
-            return toys.filter(toy =>
-                regExp.test(toy.vendor) &&
-                toy.price <= filterBy.maxPrice
-            )
+            if (!txt) txt = ''
+            if (!maxPrice) maxPrice = Infinity
+            if (txt) {
+                const regExp = new RegExp(txt, 'i')
+                toys = toys.filter(toy => regExp.test(toy.name))
+            }
+
+            if (maxPrice) {
+                toys = toys.filter(toy => toy.price <= maxPrice)
+            }
+
+            if (inStockFilter === 'all') {
+
+            } else if (inStockFilter === 'inStockFiltered') {
+                toys = toys.filter(toy => toy.inStock)
+            } else {
+                toys = toys.filter(toy => !toy.inStock)
+            }
+
+            if (sortBy === 'name') {
+                toys.sort((a, b) => a.name.localeCompare(b.name) * sortOrder)
+            } else if (sortBy === 'price') {
+                toys.sort((a, b) => (a.price - b.price) * sortOrder)
+            } else if (sortBy === 'createdAt') {
+                toys.sort((a, b) => (a.createdAt - b.createdAt) * sortOrder)
+            }
+
+            return toys
         })
 }
 
@@ -55,14 +89,14 @@ function getEmptyToy() {
     return {
         name: '',
         price: '',
-        labels:[],
+        labels: [],
     }
 }
 
 
 
 function getDefaultFilter() {
-    return { txt: '', maxPrice: '' }
+    return { txt: '', maxPrice: '', inStockFilter: 'all', sortBy: 'name', sortOrder: 1 }
 }
 
 // TEST DATA
