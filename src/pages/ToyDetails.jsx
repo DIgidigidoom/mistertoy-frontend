@@ -1,7 +1,37 @@
-export function ToyDetails() {
+import { useEffect, useState } from "react"
+import { toyService } from "../services/toy.service.js"
+import { Link, useParams } from "react-router-dom"
 
+
+
+export function ToyDetails() {
+    const [toy, setToy] = useState(null)
+    const { toyId } = useParams()
+
+    useEffect(() => {
+        if (toyId) loadToy()
+    }, [toyId])
+
+    function loadToy() {
+        toyService.getById(toyId)
+            .then(toy => setToy(toy))
+            .catch(err => {
+                console.log('Had issues in toy details', err)
+                navigate('/toy')
+            })
+    }
+    if (!toy) return <div>Loading...</div>
     return (
-        <h1>Toy Details</h1>
+        <section className="toy-details">
+            <h1>{toy.name}</h1>
+            <h5>Price: ${toy.price}</h5>
+            <p>Availability: <span>{toy.inStock ? 'In Stock' : 'Out of stock'} </span></p>
+            <p>Labels: [{toy.labels.join(', ')}]</p>
+            <Link to={`/toy/edit/${toy._id}`}>Edit</Link> &nbsp;
+            <Link to={`/toy`}>Back</Link>
+            <p>
+                <Link to="/toy/nJ5L4">Next Toy</Link>
+            </p>
+        </section>
     )
-        
 }

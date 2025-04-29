@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export function ToyPreview({ toy }) {
 
     return (
@@ -7,8 +9,8 @@ export function ToyPreview({ toy }) {
             <p>Availability: <span>{toy.inStock ? 'In Stock' : 'Out of stock'} </span></p>
             <p>Labels: [{toy.labels.join(', ')}]</p>
 
-            {/* <Link to={`/car/edit/${car._id}`}>Edit</Link> &nbsp; | &nbsp;
-            <Link to={`/car/${car._id}`}>Details</Link> */}
+            <Link to={`/toy/edit/${toy._id}`}>Edit</Link> &nbsp; | &nbsp;
+            <Link to={`/toy/${toy._id}`}>Details</Link>
 
         </article>
     )
