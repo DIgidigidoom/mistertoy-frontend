@@ -31,7 +31,8 @@ seedToys()
 //         })
 // }
 function query(filterBy = {}) {
-    let { txt, maxPrice, inStockFilter, sortBy, sortOrder } = filterBy
+    let { txt, maxPrice, inStockFilter, sortByLabel, sortBy, sortOrder } = filterBy
+    console.log("filterBy: ", filterBy)
     return storageService.query(STORAGE_KEY)
         .then(toys => {
             if (!txt) txt = ''
@@ -51,6 +52,12 @@ function query(filterBy = {}) {
                 toys = toys.filter(toy => toy.inStock)
             } else {
                 toys = toys.filter(toy => !toy.inStock)
+            }
+            if (filterBy.sortByLabel?.length) {
+                toys = toys.filter(toy =>
+                    Array.isArray(toy.labels) &&
+                    toy.labels.some(label => filterBy.sortByLabel.includes(label))
+                )
             }
 
             if (sortBy === 'name') {
@@ -96,7 +103,7 @@ function getEmptyToy() {
 
 
 function getDefaultFilter() {
-    return { txt: '', maxPrice: '', inStockFilter: 'all', sortBy: 'name', sortOrder: 1 }
+    return { txt: '', maxPrice: '', inStockFilter: 'all', sortByLabel: [], sortBy: 'name', sortOrder: 1 }
 }
 
 // TEST DATA
