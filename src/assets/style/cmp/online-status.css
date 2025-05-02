@@ -1,0 +1,12 @@
+.online-status-container{
+    border: 1px solid lightgrey;
+    height: fit-content;
+    margin: 0;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.online-status-container h1{
+    font-size: 1em;
+    
+}
