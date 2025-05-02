@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react"
 import { utilService } from "../services/util.service.js"
+import { useConfirmTabClose } from "../hooks/useConfirmTabClose.js"
 
 export function ToyFilter({ filterBy, onSetFilter }) {
 
     const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
     const onSetFilterRef = useRef(utilService.debounce(onSetFilter, 300))
+    const setHasUnsavedChanges = useConfirmTabClose()
 
     useEffect(() => {
         onSetFilterRef.current(filterByToEdit)
@@ -29,8 +31,8 @@ export function ToyFilter({ filterBy, onSetFilter }) {
         } else {
             newValue = value
         }
-    
         setFilterByToEdit(prev => ({ ...prev, [name]: newValue }))
+        setHasUnsavedChanges(true)
     }
     const { txt, maxPrice, inStockFilter, sortByLabel, sortBy, sortOrder } = filterByToEdit
     return (
