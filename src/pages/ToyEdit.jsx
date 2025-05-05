@@ -3,9 +3,9 @@ import { toyService } from "../services/toy.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { saveToy } from "../store/actions/toy.actions.js"
 import { Link, useNavigate, useParams } from "react-router-dom"
-// import { useOnlineStatus } from "../hooks/useOnlineStatusSyncStore.js"
-// import { useOnlineStatus } from "../hooks/useOnlineStatus.js"
-// import { useConfirmTabClose } from "../hooks/useConfirmTabClose.js"
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import { Button, TextField } from '@mui/material';
 
 export function ToyEdit() {
 
@@ -13,8 +13,29 @@ export function ToyEdit() {
     const [toyToEdit, setToyToEdit] = useState(toyService.getEmptyToy())
     const { toyId } = useParams()
 
-    // const isOnline = useOnlineStatus()
-    // const setHasUnsavedChanges = useConfirmTabClose()
+    const SignupSchema = Yup.object().shape({
+        name: Yup.string()
+            .min(2, 'Too Short!')
+            .max(50, 'Too Long!')
+            .required('Required'),
+        price: Yup.number()
+            .min(0, 'Must be 0 or more')
+            .required('Required'),
+    })
+
+    function formValidationClass(errors, touched) {
+        const isError = !!Object.keys(errors).length
+        const isTouched = !!Object.keys(touched).length
+        if (!isTouched) return ''
+        return isError ? 'error' : 'valid'
+    }
+
+    function CustomInput(props) {
+        return (
+            <TextField {...props} id="standard-basic" variant="standard" />
+        )
+    }
+
 
     useEffect(() => {
         if (toyId) loadCar()
@@ -29,17 +50,10 @@ export function ToyEdit() {
             })
     }
 
-    function handleChange({ target }) {
-        let { value, type, name: field } = target
-        value = type === 'number' ? +value : value
-        setToyToEdit((prevToy) => ({ ...prevToy, [field]: value }))
-        // setHasUnsavedChanges(true)
-    }
 
-    function onSaveToy(ev) {
-        ev.preventDefault()
-        if (!toyToEdit.price) toyToEdit.price = 150
-        saveToy(toyToEdit)
+    function onSaveToy(values) {
+        if (!values.price) values.price = 150
+        saveToy(values)
             .then(() => {
                 showSuccessMsg('Toy Saved!')
                 navigate('/toy')
@@ -50,41 +64,52 @@ export function ToyEdit() {
             })
     }
 
-
+    const labels = ['On wheels', 'Box game', 'Art', 'Baby', 'Doll', 'Puzzle', 'Outdoor', 'Battery Powered']
     return (
-        <>
-            <div></div>
-            <section className="toy-edit">
-                <h2>{toyToEdit._id ? 'Edit' : 'Add'} Toy</h2>
 
-                <form onSubmit={onSaveToy} >
-                    <label htmlFor="name">Name : </label>
-                    <input type="text"
-                        name="name"
-                        id="name"
-                        placeholder="Enter name..."
-                        value={toyToEdit.name}
-                        onChange={handleChange}
-                    />
-                    <label htmlFor="price">Price : </label>
-                    <input type="number"
-                        name="price"
-                        id="price"
-                        placeholder="Enter price"
-                        value={toyToEdit.price}
-                        onChange={handleChange}
-                    />
+        <Formik
+            initialValues={{
+                name: '',
+                price: '',
 
-                    <div>
-                        <button>{toyToEdit._id ? 'Save' : 'Add'}</button>
-                        <Link to="/toy">Cancel</Link>
-                    </div>
-                    <section>
-                        {/* <h1>{isOnline ? '✅ Online' : '❌ Disconnected'}</h1> */}
-                    </section>
-                </form>
-            </section>
-        </>
+            }}
+            validationSchema={SignupSchema}
+            onSubmit={(values) => {
+                onSaveToy(values)
+            }}
+        >
+            {({ errors, touched, dirty }) => {
+                const validationClass = formValidationClass(errors, touched)
+                return (
+                    <Form className={`formik ${validationClass}`}>
+
+                        <label htmlFor="name"></label>
+                        <Field as={CustomInput} id="name" name="name" label="Name..." />
+                        {errors.name && touched.name && (
+                            <div className="errors">{errors.name}</div>
+                        )}
+
+                        <label htmlFor="price"></label>
+                        <Field as={CustomInput} id="price" name="price" label="Price.." />
+                        {errors.price && touched.price && (
+                            <div className="errors">{errors.price}</div>
+                        )}
+
+                        <div id="checkbox-group">Labels</div>
+                        <div role="group" aria-labelledby="checkbox-group">
+                            {labels.map(label => (
+                                <label key={label}>
+                                    <Field type="checkbox" name="labels" value={label} />
+                                    {label}
+                                </label>
+                            ))}
+                        </div>
+                        <button type="submit" >{toyToEdit._id ? 'Save' : 'Add'}</button>
+                        <button onClick={() => navigate('/toy')}>Back</button>
+                    </Form>
+                )
+            }}
+        </Formik>
     )
 
 }

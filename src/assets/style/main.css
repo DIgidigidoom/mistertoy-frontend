@@ -18,3 +18,6 @@
 @import './cmp/popup.css';
 @import './cmp/chat.css';
 @import './cmp/online-status.css';
+@import './cmp/doughnut-chart.css';
+@import './cmp/line-chart.css';
+@import './cmp/google-map.css';

@@ -1,112 +1,71 @@
 
-import { storageService } from './async-storage.service.js'
-import { seedToys } from './toy.seed.service.js'
-// import { utilService } from './util.service.js'
-// import { userService } from './user.service.js'
+import { httpService } from './http.service.js'
+import { utilService } from './util.service.js'
 
-const STORAGE_KEY = 'toyDB'
+// import Axios from 'axios'
 
-export const toyService = {
+// const axios = Axios.create({
+//     withCredentials: true
+// })
+
+// const BASE_URL = '/api/toy/'
+// const BASE_URL = 'http://127.0.0.1:3030/api/toy/'
+const BASE_URL = 'toy/'
+
+export const  toyService = {
     query,
     getById,
     save,
     remove,
     getEmptyToy,
-    getDefaultFilter
+    getDefaultFilter,
+    
 }
 
 
-seedToys()
 
-// function query(filterBy = {}) {
-//     return storageService.query(STORAGE_KEY)
-//         .then(toys => {
-//             if (!filterBy.txt) filterBy.txt = ''
-//             if (!filterBy.maxPrice) filterBy.maxPrice = Infinity
-//             const regExp = new RegExp(filterBy.txt, 'i')
-//             return toys.filter(toy =>
-//                 regExp.test(toy.name) &&
-//                 toy.price <= filterBy.maxPrice
-//             )
-//         })
-// }
 function query(filterBy = {}) {
-    let { txt, maxPrice, inStockFilter, sortByLabel, sortBy, sortOrder } = filterBy
-    console.log("filterBy: ", filterBy)
-    return storageService.query(STORAGE_KEY)
-        .then(toys => {
-            if (!txt) txt = ''
-            if (!maxPrice) maxPrice = Infinity
-            if (txt) {
-                const regExp = new RegExp(txt, 'i')
-                toys = toys.filter(toy => regExp.test(toy.name))
-            }
-
-            if (maxPrice) {
-                toys = toys.filter(toy => toy.price <= maxPrice)
-            }
-
-            if (inStockFilter === 'all') {
-
-            } else if (inStockFilter === 'inStockFiltered') {
-                toys = toys.filter(toy => toy.inStock)
-            } else {
-                toys = toys.filter(toy => !toy.inStock)
-            }
-            if (filterBy.sortByLabel?.length) {
-                toys = toys.filter(toy =>
-                    Array.isArray(toy.labels) &&
-                    toy.labels.some(label => filterBy.sortByLabel.includes(label))
-                )
-            }
-
-            if (sortBy === 'name') {
-                toys.sort((a, b) => a.name.localeCompare(b.name) * sortOrder)
-            } else if (sortBy === 'price') {
-                toys.sort((a, b) => (a.price - b.price) * sortOrder)
-            } else if (sortBy === 'createdAt') {
-                toys.sort((a, b) => (a.createdAt - b.createdAt) * sortOrder)
-            }
-
-            return toys
-        })
+    return httpService.get(BASE_URL, filterBy)
 }
 
 function getById(toyId) {
-    return storageService.get(STORAGE_KEY, toyId)
-}
+    return httpService.get(BASE_URL + toyId)
 
+}
 function remove(toyId) {
-    // return Promise.reject('Not now!')
-    return storageService.remove(STORAGE_KEY, toyId)
+    return httpService.delete(BASE_URL + toyId) // api/toy/c102/remove
 }
-
 
 function save(toy) {
     if (toy._id) {
-        return storageService.put(STORAGE_KEY, toy)
+        return httpService.put(BASE_URL + toy._id, toy)
     } else {
-        // when switching to backend - remove the next line
-        // toy.owner = userService.getLoggedinUser()
-        return storageService.post(STORAGE_KEY, toy)
+        return httpService.post(BASE_URL, toy)
     }
 }
+
 
 function getEmptyToy() {
     return {
         name: '',
-        price: '',
+        price: 0,
         labels: [],
+        createdAt: Date.now(),
+        inStock: true,
+        imgUrl: '',
     }
 }
 
 
-
 function getDefaultFilter() {
-    return { txt: '', maxPrice: '', inStockFilter: 'all', sortByLabel: [], sortBy: 'name', sortOrder: 1 }
+    return {
+        txt: '',
+        inStock: null,
+        labels: [],
+        pageIdx: 0,
+        sortBy: { type: '', sortDir: 1 },
+    }
 }
 
-// TEST DATA
-// storageService.post(STORAGE_KEY, {vendor: 'Subali Rahok 6', price: 980}).then(x => console.log(x))
 
 
