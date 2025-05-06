@@ -18,15 +18,7 @@ const initialState = {
 
 export function userReducer(state = initialState, action = {}) {
     switch (action.type) {
-        //* Count
-        case INCREMENT:
-            return { ...state, count: state.count + 1 }
-        case DECREMENT:
-            return { ...state, count: state.count - 1 }
-        case CHANGE_BY:
-            return { ...state, count: state.count + action.diff }
-
-
+        
         //* User
         case SET_USER:
             return {

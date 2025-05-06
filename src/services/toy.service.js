@@ -12,14 +12,14 @@ import { utilService } from './util.service.js'
 // const BASE_URL = 'http://127.0.0.1:3030/api/toy/'
 const BASE_URL = 'toy/'
 
-export const  toyService = {
+export const toyService = {
     query,
     getById,
     save,
     remove,
     getEmptyToy,
     getDefaultFilter,
-    
+
 }
 
 
@@ -60,10 +60,10 @@ function getEmptyToy() {
 function getDefaultFilter() {
     return {
         txt: '',
-        inStock: null,
-        labels: [],
-        pageIdx: 0,
-        sortBy: { type: '', sortDir: 1 },
+        inStockFilter: 'all',
+        sortByLabel: [],
+        sortBy: 'name',
+        sortOrder: 1,
     }
 }
 

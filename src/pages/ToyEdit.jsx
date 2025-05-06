@@ -38,10 +38,12 @@ export function ToyEdit() {
 
 
     useEffect(() => {
-        if (toyId) loadCar()
+        console.log("toyToEdit: ", toyToEdit)
+        console.log("toyId ", toyId)
+        if (toyId) loadToy()
     }, [])
 
-    function loadCar() {
+    function loadToy() {
         toyService.getById(toyId)
             .then(toy => setToyToEdit(toy))
             .catch(err => {
@@ -52,8 +54,12 @@ export function ToyEdit() {
 
 
     function onSaveToy(values) {
+        const { name, price, labels } = values
+        toyToEdit.name = name
+        toyToEdit.price = price
+        toyToEdit.labels = labels
         if (!values.price) values.price = 150
-        saveToy(values)
+        saveToy(toyToEdit)
             .then(() => {
                 showSuccessMsg('Toy Saved!')
                 navigate('/toy')
@@ -65,14 +71,22 @@ export function ToyEdit() {
     }
 
     const labels = ['On wheels', 'Box game', 'Art', 'Baby', 'Doll', 'Puzzle', 'Outdoor', 'Battery Powered']
+    const initialValues = toyToEdit?._id
+        ? {
+            name: toyToEdit.name || '',
+            price: toyToEdit.price || '',
+            labels: toyToEdit.labels || []
+        }
+        : {
+            name: '',
+            price: '',
+            labels: []
+        }
     return (
 
         <Formik
-            initialValues={{
-                name: '',
-                price: '',
-
-            }}
+            enableReinitialize={true}
+            initialValues={initialValues}
             validationSchema={SignupSchema}
             onSubmit={(values) => {
                 onSaveToy(values)

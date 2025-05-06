@@ -12,14 +12,7 @@ export function ToyFilter({ filterBy, onSetFilter }) {
         onSetFilterRef.current(filterByToEdit)
     }, [filterByToEdit])
 
-    // function handleChange({ target }) {
-    //     let { value, name: field, type, selectedOptions, multiple } = target
-    //     if (multiple) {
-    //         value = Array.from(selectedOptions, opt => opt.value)
-    //     } else value = type === 'number' ? +value : value
-
-    //     setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
-    // }
+    
     function handleChange({ target }) {
         const { name, type, value, multiple, selectedOptions } = target
     
@@ -53,7 +46,7 @@ export function ToyFilter({ filterBy, onSetFilter }) {
                 id="maxPrice"
                 name="maxPrice"
                 placeholder="By max price"
-                value={maxPrice || ''}
+                value={isFinite(maxPrice) ? maxPrice : ''}
                 onChange={handleChange}
             />
 

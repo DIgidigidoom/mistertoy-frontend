@@ -26,17 +26,16 @@ export function ToyIndex() {
     }, [filterBy])
 
     function onSetFilter(filterBy) {
-        setFilterBy(filterBy)
+        dispatch(setFilterBy(filterBy))
     }
 
-    function onRemoveToy(toyId) {
-        removeToyOptimistic(toyId)
-            .then(() => {
-                showSuccessMsg('Toy removed')
-            })
-            .catch(err => {
-                showErrorMsg('Cannot remove toy')
-            })
+    async function onRemoveToy(toyId) {
+        try {
+            await removeToyOptimistic(toyId)
+            showSuccessMsg('Toy removed')
+        } catch (err) {
+            showErrorMsg('Cannot remove toy')
+        }
     }
 
     return (

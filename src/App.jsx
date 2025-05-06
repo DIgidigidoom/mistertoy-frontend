@@ -4,8 +4,7 @@ import './assets/style/main.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 // import { AppFooter } from './cmps/AppFooter.jsx'
-// import { UserDetails } from './pages/UserDetails.jsx'
-
+import { UserDetails } from './pages/UserDetails.jsx'
 import { AppHeader } from './cmps/AppHeader.jsx'
 import { Home } from './pages/Home.jsx'
 import { About } from './pages/About.jsx'
@@ -32,6 +31,8 @@ function App() {
               <Route element={<ToyEdit />} path="/toy/edit" />
               <Route element={<ToyEdit />} path="/toy/edit/:toyId" />
               <Route element={<ToyDetails />} path="/toy/:toyId" />
+              <Route element={<ToyDetails />} path="/toy/:toyId" />
+              <Route element={<UserDetails />} path="/user/:userId" />
               <Route element={<Dashboard />} path="/dashboard" />
               {/* <Route element={<UserDetails />} path="/user/:userId" /> */}
             </Routes>
