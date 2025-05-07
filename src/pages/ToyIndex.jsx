@@ -7,6 +7,7 @@ import { loadToys, removeToy, removeToyOptimistic, saveToy, setFilterBy } from '
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate, useSearchParams } from "react-router-dom"
+import {SET_USER} from '../store/reducers/user.reducer.js'
 
 export function ToyIndex() {
 
@@ -14,11 +15,12 @@ export function ToyIndex() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const toys = useSelector(storeState => storeState.toyModule.toys)
+    const user = useSelector(storeState => storeState.userModule.loggedInUser)
     const filterBy = useSelector(storeState => storeState.toyModule.filterBy)
     const isLoading = useSelector(storeState => storeState.toyModule.isLoading)
 
     useEffect(() => {
-
+        console.log("user: ", user)
         loadToys()
             .catch(err => {
                 showErrorMsg('Cannot load toyss!')
@@ -31,7 +33,7 @@ export function ToyIndex() {
 
     async function onRemoveToy(toyId) {
         try {
-            await removeToyOptimistic(toyId)
+            await removeToy(toyId)
             showSuccessMsg('Toy removed')
         } catch (err) {
             showErrorMsg('Cannot remove toy')
@@ -42,7 +44,10 @@ export function ToyIndex() {
         <div className='main-index container'>
             <h3>Mister Toy App</h3>
             <main>
-                <button onClick={() => navigate(`/toy/edit`)}>Add Toy</button>
+                <button onClick={() => navigate(`/toy/edit`)} disabled={!user?.isAdmin}>
+                    Add Toy
+                </button> 
+               
                 <ToyFilter
                     filterBy={filterBy}
                     onSetFilter={onSetFilter} />

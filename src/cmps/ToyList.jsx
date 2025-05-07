@@ -1,7 +1,10 @@
 import { ToyPreview } from "./ToyPreview.jsx"
 import { useNavigate } from "react-router-dom"
+import { useSelector } from 'react-redux'
 
 export function ToyList({ toys, onRemoveToy, onEditToy, addToCart }) {
+
+    const user = useSelector(storeState => storeState.userModule.loggedInUser)
 
     const navigate = useNavigate()
 
@@ -12,8 +15,12 @@ export function ToyList({ toys, onRemoveToy, onEditToy, addToCart }) {
                     <ToyPreview toy={toy} />
 
                     <div>
-                        <button onClick={() => onRemoveToy(toy._id)}>x</button>
-                        <button onClick={() => navigate(`/toy/edit/${toy._id}`)}>Edit</button>
+                        <button onClick={() => onRemoveToy(toy._id)} disabled={!user?.isAdmin}>
+                            X
+                        </button>
+                        <button onClick={() => navigate(`/toy/edit/${toy._id}`)} disabled={!user?.isAdmin}>
+                            Edit
+                        </button>
                         <button onClick={() => navigate(`/toy/${toy._id}`)}>Details</button>
 
                     </div>

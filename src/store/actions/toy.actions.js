@@ -9,6 +9,7 @@ export async function loadToys() {
         const filterBy = store.getState().toyModule.filterBy
         store.dispatch({ type: SET_IS_LOADING, isLoading: true })
         const toys = await toyService.query(filterBy)
+        console.log('Loaded toys:', toys)
         store.dispatch({ type: SET_TOYS, toys })
     } catch (err) {
         console.log('toy action -> Cannot load toys', err)

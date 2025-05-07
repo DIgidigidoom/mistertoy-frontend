@@ -1,8 +1,10 @@
+import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { userService } from '../services/user.service.js'
 import { login, signup } from '../store/actions/user.actions.js'
 import { LoginForm } from './LoginForm.jsx'
+
 
 
 export function LoginSignup() {
@@ -15,13 +17,19 @@ export function LoginSignup() {
 
     function _login(credentials) {
         login(credentials)
-            .then(() => { showSuccessMsg('Logged in successfully') })
+            .then(() => {
+
+                showSuccessMsg('Logged in successfully')
+            })
             .catch((err) => { showErrorMsg('Oops try again') })
     }
 
     function _signup(credentials) {
         signup(credentials)
-            .then(() => { showSuccessMsg('Signed in successfully') })
+            .then(() => {
+
+                showSuccessMsg('Signed in successfully')
+            })
             .catch((err) => { showErrorMsg('Oops try again') })
     }
 
