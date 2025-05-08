@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { toyService } from "../services/toy.service.js"
 import { Link, useParams, useNavigate } from "react-router-dom"
-import { PopUp } from "../cmps/PopUp.jsx" 
-import { Chat } from "../cmps/Chat.jsx"             
+import { PopUp } from "../cmps/PopUp.jsx"
+import { Chat } from "../cmps/Chat.jsx"
 
 export function ToyDetails() {
     const [toy, setToy] = useState(null)
@@ -26,6 +26,15 @@ export function ToyDetails() {
 
     function toggleChat() {
         setIsChatOpen(prev => !prev)
+    }
+    
+    async function onSaveMsg(msg) {
+        try {
+           const savedMsg =  await toyService.AddMsg(msg, toyId)
+           console.log("savedMsg: ", savedMsg)
+        } catch (error) {
+            console.log('Had issues in toy msg', err)
+        }
     }
 
     if (!toy) return <div>Loading...</div>
@@ -53,8 +62,12 @@ export function ToyDetails() {
                     heading="Chat with us!"
                     footing={<small>Type your question here</small>}
                     onClose={toggleChat}
+
                 >
-                    <Chat toy={toy} />
+                    <Chat
+                        toy={toy}
+                        onSaveMsg={onSaveMsg}
+                    />
                 </PopUp>
             )}
         </section>

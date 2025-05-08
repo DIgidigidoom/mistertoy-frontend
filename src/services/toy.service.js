@@ -19,29 +19,32 @@ export const toyService = {
     remove,
     getEmptyToy,
     getDefaultFilter,
-
+    AddMsg
 }
 
 
 
-function query(filterBy = {}) {
+async function query(filterBy = {}) {
     return httpService.get(BASE_URL, filterBy)
 }
 
-function getById(toyId) {
+async function getById(toyId) {
     return httpService.get(BASE_URL + toyId)
 
 }
-function remove(toyId) {
+async function remove(toyId) {
     return httpService.delete(BASE_URL + toyId) // api/toy/c102/remove
 }
 
-function save(toy) {
+async function save(toy) {
     if (toy._id) {
         return httpService.put(BASE_URL + toy._id, toy)
     } else {
         return httpService.post(BASE_URL, toy)
     }
+}
+async function AddMsg(msg, toyId) {
+    return httpService.post(BASE_URL + toyId + '/msg', msg)
 }
 
 

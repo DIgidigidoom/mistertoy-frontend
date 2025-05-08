@@ -43,19 +43,7 @@ export async function removeToyOptimistic(toyId) {
     }
 }
 
-// export function saveToy(toy) {
-//     console.log("toy: ", toy)
-//     const type = toy._id ? UPDATE_TOY : ADD_TOY
-//     return toyService.save(toy)
-//         .then(savedToy => {
-//             store.dispatch({ type, toy: savedToy })
-//             return savedToy
-//         })
-//         .catch(err => {
-//             console.log('toy action -> Cannot save toy', err)
-//             throw err
-//         })
-// }
+
 export async function saveToy(toy) {
     try {
         const type = toy._id ? UPDATE_TOY : ADD_TOY
@@ -71,3 +59,6 @@ export async function saveToy(toy) {
 export function setFilterBy(filterBy) {
     return { type: SET_FILTER_BY, filterBy }
 }
+
+
+
